@@ -1,0 +1,446 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VitaBlend</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --purple: #7c3aed;
+    --pink: #ec4899;
+    --orange: #f97316;
+    --yellow: #facc15;
+    --green: #22c55e;
+    --bg: #f9f5ff;
+    --white: #ffffff;
+    --dark: #1a1a2e;
+    --muted: #6b7280;
+    --radius: 20px;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+  }
+
+  /* NAV */
+  nav {
+    background: var(--white);
+    padding: 1rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  .nav-logo {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--purple);
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--purple); }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #7c3aed 0%, #ec4899 60%, #f97316 100%);
+    padding: 6rem 2.5rem;
+    text-align: center;
+    color: white;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 0.4rem 1.2rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.15;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 span { color: var(--yellow); }
+  .hero p {
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    opacity: 0.9;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+  .btn-primary {
+    background: var(--yellow);
+    color: var(--dark);
+    padding: 0.9rem 2.2rem;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+  /* RECIPES SECTION */
+  #recipes {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2.5rem;
+  }
+  .section-header { text-align: center; margin-bottom: 3rem; }
+  .section-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--purple);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--dark);
+    margin-bottom: 0.8rem;
+  }
+  .section-sub {
+    color: var(--muted);
+    font-size: 0.97rem;
+    font-weight: 400;
+  }
+
+  /* RECIPE GRID */
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.8rem;
+  }
+  .recipe-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  }
+  .recipe-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(124,58,237,0.15); }
+  .card-img {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.5rem;
+  }
+  .card-body { padding: 1.3rem; }
+  .card-title {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--dark);
+    margin-bottom: 0.4rem;
+  }
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .kcal-badge {
+    background: linear-gradient(135deg, var(--orange), var(--pink));
+    color: white;
+    padding: 0.3rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .vitamin-pills { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.8rem; }
+  .vitamin-pill {
+    background: #f3e8ff;
+    color: var(--purple);
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  /* ABOUT */
+  .about-section {
+    background: linear-gradient(135deg, #7c3aed, #ec4899);
+    padding: 5rem 2.5rem;
+    text-align: center;
+    color: white;
+  }
+  .about-card {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .about-avatar {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+  }
+  .about-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 0.4rem;
+  }
+  .about-role {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  .about-bio {
+    font-size: 1rem;
+    line-height: 1.8;
+    opacity: 0.9;
+    font-weight: 400;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    color: #a0a0b0;
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.88rem;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    max-width: 480px;
+    width: 90%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-close {
+    position: absolute;
+    top: 1rem; right: 1.2rem;
+    background: none; border: none;
+    font-size: 1.6rem; cursor: pointer;
+    color: var(--muted);
+  }
+  .modal-emoji { font-size: 3.5rem; margin-bottom: 0.8rem; }
+  .modal h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+  }
+  .modal-desc { color: var(--muted); font-size: 0.93rem; line-height: 1.7; margin-bottom: 1.2rem; }
+  .modal-section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--purple);
+    font-weight: 700;
+    margin: 1.2rem 0 0.5rem;
+  }
+  .ing-pill {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    background: #f3e8ff;
+    color: var(--purple);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 0.2rem;
+  }
+  .modal-steps {
+    font-size: 0.92rem;
+    color: var(--dark);
+    line-height: 1.8;
+    white-space: pre-line;
+  }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">🥤 VitaBlend</div>
+    <ul class="nav-links">
+      <li><a href="#recipes">Recipes</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-tag">🌿 100% Healthy Smoothies</span>
+      <h1>Blend Smarter,<br><span>Live Better</span></h1>
+      <p>Discover smoothies packed with real vitamins and honest nutrition. Know exactly what's in every sip.</p>
+      <a href="#recipes" class="btn-primary">Explore Smoothies</a>
+    </div>
+  </section>
+
+  <!-- RECIPES -->
+  <section id="recipes">
+    <div class="section-header">
+      <p class="section-label">Recipe Library</p>
+      <h2 class="section-title">Our Smoothies</h2>
+      <p class="section-sub">Click any smoothie to see full nutrition info — vitamins, kcal and more.</p>
+    </div>
+    <div class="recipe-grid" id="recipeGrid"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about-section">
+    <div class="about-card">
+      <div class="about-avatar">🥤</div>
+      <h2 class="about-name">Desena James</h2>
+      <p class="about-role">Student</p>
+      <p class="about-bio">
+        Hey, I'm Desena, who believes that
+        what you drink is just as important as what you eat! 🌈
+        A great smoothie can boost your energy, lift your mood and
+        make your whole day better. VitaBlend was born from that idea 
+        every blend here is packed with real vitamins to make you
+        feel amazing from the inside out.
+        Drink well, feel well! 🥤✨
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>🥤 VitaBlend &copy; 2026 &nbsp;&bull;&nbsp; by Desena James</p>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+  const recipes = [
+    { id:1, name:"Tropical Green Power", emoji:"🥭", bg:"#d8f3dc",
+      desc:"A creamy mango-spinach blend that's sweet, energising and packed with vitamins.",
+      cal:"210 kcal", vitamins:["Vitamin A", "Vitamin C", "Vitamin K", "Folate"],
+      ingredients:["Mango","Spinach","Banana","Coconut milk","Chia seeds"],
+      steps:"1. Add all ingredients to a blender.\n2. Blend on high for 60 seconds.\n3. Pour into a chilled glass and enjoy!" },
+
+    { id:2, name:"Berry Blast", emoji:"🫐", bg:"#ede7f6",
+      desc:"Blueberries, strawberries and Greek yoghurt blended into a thick, vibrant smoothie.",
+      cal:"190 kcal", vitamins:["Vitamin C", "Vitamin K", "Vitamin B6", "Manganese"],
+      ingredients:["Blueberries","Strawberries","Greek yoghurt","Honey","Almond milk"],
+      steps:"1. Add frozen berries and yoghurt to blender.\n2. Pour in almond milk.\n3. Blend until thick and smooth." },
+
+    { id:3, name:"Green Detox", emoji:"🥬", bg:"#c7f0d1",
+      desc:"A powerful kale and cucumber blend to cleanse, energise and refresh.",
+      cal:"145 kcal", vitamins:["Vitamin K", "Vitamin C", "Vitamin A", "Iron"],
+      ingredients:["Kale","Cucumber","Green apple","Lemon","Ginger","Water"],
+      steps:"1. Chop all ingredients.\n2. Add to blender with water.\n3. Blend until smooth and serve immediately." },
+
+    { id:4, name:"Banana Oat Power", emoji:"🍌", bg:"#fff8e1",
+      desc:"A filling, energy-boosting smoothie with oats, banana and almond butter.",
+      cal:"310 kcal", vitamins:["Vitamin B6", "Vitamin E", "Magnesium", "Potassium"],
+      ingredients:["Banana","Rolled oats","Almond butter","Oat milk","Honey","Cinnamon"],
+      steps:"1. Soak oats in oat milk for 2 min.\n2. Add remaining ingredients.\n3. Blend until creamy and smooth." },
+
+    { id:5, name:"Mango Turmeric Glow", emoji:"🌟", bg:"#fff3cd",
+      desc:"Anti-inflammatory turmeric meets sweet mango in this golden wellness smoothie.",
+      cal:"175 kcal", vitamins:["Vitamin C", "Vitamin A", "Curcumin", "Vitamin B6"],
+      ingredients:["Mango","Turmeric","Ginger","Coconut milk","Black pepper","Honey"],
+      steps:"1. Add all ingredients to blender.\n2. Blend on high for 45 seconds.\n3. Serve immediately for best flavour." },
+
+    { id:6, name:"Strawberry Spinach", emoji:"🍓", bg:"#fce4ec",
+      desc:"Sweet strawberries balance earthy spinach in this iron-rich daily smoothie.",
+      cal:"160 kcal", vitamins:["Vitamin C", "Vitamin K", "Iron", "Folate"],
+      ingredients:["Strawberries","Spinach","Banana","Almond milk","Flaxseeds"],
+      steps:"1. Add spinach and milk to blender first.\n2. Add remaining ingredients.\n3. Blend until smooth." },
+  ];
+
+  function renderRecipes() {
+    document.getElementById('recipeGrid').innerHTML = recipes.map(r => `
+      <div class="recipe-card" onclick="openModal(${r.id})">
+        <div class="card-img" style="background:${r.bg}">${r.emoji}</div>
+        <div class="card-body">
+          <div class="card-title">${r.name}</div>
+          <div class="card-desc">${r.desc}</div>
+          <div class="card-meta">
+            <span class="kcal-badge">🔥 ${r.cal}</span>
+          </div>
+          <div class="vitamin-pills">
+            ${r.vitamins.map(v => `<span class="vitamin-pill">${v}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function openModal(id) {
+    const r = recipes.find(x => x.id === id);
+    document.getElementById('modalContent').innerHTML = `
+      <div class="modal-emoji">${r.emoji}</div>
+      <h2>${r.name}</h2>
+      <p class="modal-desc">${r.desc}</p>
+      <div class="card-meta">
+        <span class="kcal-badge">🔥 ${r.cal}</span>
+      </div>
+      <div class="modal-section-title">Vitamins & Nutrients</div>
+      <div class="vitamin-pills">
+        ${r.vitamins.map(v => `<span class="vitamin-pill">${v}</span>`).join('')}
+      </div>
+      <div class="modal-section-title">Ingredients</div>
+      <div>${r.ingredients.map(i => `<span class="ing-pill">${i}</span>`).join('')}</div>
+      <div class="modal-section-title">How to make it</div>
+      <p class="modal-steps">${r.steps}</p>
+    `;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  document.getElementById('modalClose').onclick = () =>
+    document.getElementById('modalOverlay').classList.remove('open');
+
+  document.getElementById('modalOverlay').onclick = (e) => {
+    if (e.target.id === 'modalOverlay')
+      document.getElementById('modalOverlay').classList.remove('open');
+  };
+
+  renderRecipes();
+  </script>
+
+</body>
+</html>
